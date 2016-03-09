@@ -1,3 +1,4 @@
+#coding=utf-8
 from burp import IBurpExtender
 from burp import IIntruderPayloadGeneratorFactory
 from burp import IIntruderPayloadGenerator
@@ -78,7 +79,7 @@ class BHPFuzzer(IIntruderPayloadGenerator):
 			repeater=random.randint(1,10)
 
 			for i in range(repeat):
-				payload+=original_payload[offset;offset+chunk_length]
+				payload+=original_payload[offset,offset+chunk_length]
 
 		#添加载荷中的剩余字节
 		payload+=original_payload[offset:]

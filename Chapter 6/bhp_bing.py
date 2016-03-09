@@ -1,9 +1,10 @@
+#coding=utf-8
 from burp import IBurpExtender
 from burp import IContextMenuFactory
 
 from javax.swing import JMenuItem
 from java.util import List, ArrayList
-from java.util import URL
+from java.net import URL
 
 import socket
 import urllib

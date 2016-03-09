@@ -1,3 +1,4 @@
+#coding=utf-8
 from burp import IBurpExtender
 from burp import IContextMenuFactory
 
@@ -24,7 +25,7 @@ class TagStripper(HTMLParser):
 		self.feed(html)
 		return "".join(self.page_text)
 
-class BurpExtender(IBurpExtender, IContextMenuFactory):, 
+class BurpExtender(IBurpExtender, IContextMenuFactory): 
 	def registerExtenderCallbacks(self, callbacks):
 		self._callbacks=callbacks
 		self._helpers=callbacks.getHelpers()

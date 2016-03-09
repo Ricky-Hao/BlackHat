@@ -36,7 +36,7 @@ class BurpExtender(IBurpExtender, IContextMenuFactory):
 		self.wordlist=set(["password"])
 
 		#建立起我们的扩展工具
-		callbacks.setExtensionMenu("BHP Wordlist")
+		callbacks.setExtensionName("BHP Wordlist")
 		callbacks.registerContextMenuFactory(self)
 
 		return 

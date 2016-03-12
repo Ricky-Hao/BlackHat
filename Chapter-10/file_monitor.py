@@ -43,7 +43,7 @@ def start_monitor(path_to_watch):
                 win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
                 win32con.FILE_NOTIFY_CHANGE_SIZE |
                 win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-                win32con.FILE_NOTIFY_CHANGE_SECURIY,
+                win32con.FILE_NOTIFY_CHANGE_SECURITY,
                 None,
                 None
             )
@@ -71,7 +71,7 @@ def start_monitor(path_to_watch):
                         print("[!!!] Failed.")
                         print(e)
 
-                elif action == FILE_RENAME_FRON:
+                elif action == FILE_RENAME_FROM:
                     print("[ > ] Renamed from: %s" % full_filename)
                 elif action == FILE_RENAMED_TO:
                     print("[ < ] Renamed to: %s" % full_filename)
@@ -83,4 +83,4 @@ def start_monitor(path_to_watch):
 for path in dirs_to_monitor:
     monitor_thread = threading.Thread(target=start_monitor,args=(path,))
     print("Spawning monitoring thread for path: %s" % path)
-    monitt.start()
+    monitor_thread.start()

@@ -6,6 +6,30 @@ import wmi
 import sys
 import os
 
+def get_process_privileges(pid):
+    try:
+        #获取目标进程的句柄
+        hproc = win32api.OpenProcess(win32con,PROCESS_QUERY_INFORMATION,False,pid)
+
+        #打开主进程的令牌
+        htok = win32security.OpenProcessToken(hproc,win32con,TOKEN_QUERY)
+
+        #解析已启用权限的列表
+        privs = win32security.GetTokenInformation(htok,win32security.TokenPrivileges)
+
+        #迭代每个权限并输出其中已启用的
+        priv_list=""
+        for i in privs:
+            #检测权限是否已经启用
+            if i[1] == 3:
+                priv_list += "%s|" % win32con.LookupPrivilegeName(None,i[0])
+
+    except:
+        priv_list = "N/A"
+
+    return priv_list
+
+
 def log_to_file(message):
     with open("process_monitor_log.csv","ab") as fd:
         fd.write(("%s\r\n" % message).encode())
@@ -32,7 +56,7 @@ while True:
         cmdline     = new_process.CommandLine
         pid         = new_process.ProcessId
         parent_id   = new_process.ParentProcessId
-        privileges  = "N/A"
+        privileges  = get_process_privileges(pid)
 
         process_log_message = "%s,%s,%s,%s,%s,%s,%s\r\n" % (create_date,proc_owner,executable,cmdline,pid,parent_id,privileges)
 

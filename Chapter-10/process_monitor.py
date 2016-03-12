@@ -9,10 +9,10 @@ import os
 def get_process_privileges(pid):
     try:
         #获取目标进程的句柄
-        hproc = win32api.OpenProcess(win32con,PROCESS_QUERY_INFORMATION,False,pid)
+        hproc = win32api.OpenProcess(win32con.PROCESS_QUERY_INFORMATION,False,pid)
 
         #打开主进程的令牌
-        htok = win32security.OpenProcessToken(hproc,win32con,TOKEN_QUERY)
+        htok = win32security.OpenProcessToken(hproc,win32con.TOKEN_QUERY)
 
         #解析已启用权限的列表
         privs = win32security.GetTokenInformation(htok,win32security.TokenPrivileges)
@@ -22,9 +22,10 @@ def get_process_privileges(pid):
         for i in privs:
             #检测权限是否已经启用
             if i[1] == 3:
-                priv_list += "%s|" % win32con.LookupPrivilegeName(None,i[0])
+                priv_list += "%s|" % win32security.LookupPrivilegeName(None,i[0])
 
-    except:
+    except Exception as e:
+        print(e)
         priv_list = "N/A"
 
     return priv_list

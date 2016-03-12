@@ -62,7 +62,7 @@ def start_monitor(path_to_watch):
                     print("[vvv] Dumping contents...")
 
                     try:
-                        wait open(full_filename,"rb") as fd:
+                        with open(full_filename,"rb") as fd:
                             contents = fd.read()
 
                         print(contents)

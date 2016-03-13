@@ -100,7 +100,7 @@ def client_sender(buffer):
             response=""
 
             while recv_len:
-                data            =client.recv(4096).decode()
+                data            =client.recv(4096).decode("gbk")
                 recv_len	=len(data)
                 response+=data
 

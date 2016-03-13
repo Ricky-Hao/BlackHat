@@ -91,7 +91,7 @@ def client_sender(buffer):
         client.connect((target,port))
 
         if(len(buffer)):
-            client.send(buffer)
+            client.send(buffer.encode())
 
         while True:
 
@@ -100,7 +100,7 @@ def client_sender(buffer):
             response=""
 
             while recv_len:
-                data		=client.recv(4096)
+                data            =client.recv(4096).decode()
                 recv_len	=len(data)
                 response+=data
 
@@ -109,13 +109,15 @@ def client_sender(buffer):
             print(response)
 
             #等待更多的输入
-            buffer=raw_input("")
+            buffer=input("")
             buffer+="\n"
 
             #发送出去
-            client.send(buffer)
+            client.send(buffer.encode())
 
-    except:
+    except Exception as e:
+        print(119)
+        print(e)
         print("[*] Exception! Exting.")
 
     #关闭连接
@@ -146,7 +148,9 @@ def run_command(command):
     #运行命令并将输出返回
     try:
         output=subprocess.check_output(command,stderr=subprocess.STDOUT,shell=True)
-    except:
+    except Exception as e:
+        print(152)
+        print(e)
         output="Failed to execute command.\r\n"
 
     #将输出发送
@@ -180,7 +184,9 @@ def client_handler(client_socket):
             
             #确认文件已经写出来
             client_socket.send("Successfully saved file to %s\r\n" % upload_destination)
-        except:
+        except Exception as e:
+            print(186)
+            print(e)
             client_socket.send("Failed to save file to %s\r\n"%upload_destination)
     
     #检查命令执行
@@ -194,16 +200,18 @@ def client_handler(client_socket):
     if command:
         while True:
             #跳出一个窗口
-            client_socket.send("<BHP:#> ")
+            client_socket.send("<BHP:#> ".encode())
             
             #现在我们接收文件直到发现换行符（enter key）
             cmd_buffer=""
             while "\n" not in cmd_buffer:
-                cmd_buffer+=client_socket.recv(1024)
+                cmd_buffer+=client_socket.recv(1024).decode()
             
             #返还命令输出
             response=run_command(cmd_buffer)
-            
+            if type(response) != bytes:
+               response=response.encode()
+
             #返回响应数据
             client_socket.send(response)
             
